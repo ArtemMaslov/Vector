@@ -140,12 +140,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CoordinateSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Clock.h" />
     <ClInclude Include="CoordinateSystem.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="Vector.h" />

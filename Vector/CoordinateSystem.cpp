@@ -14,12 +14,14 @@ CoordinateSystem::CoordinateSystem(const Point p1, const Point p2, const Segment
 	p1(p1),
 	p2(p2),
 	x(x),
-	y(y)
+	y(y),
+	arrowHeight(0),
+	arrowWidth(0)
 {
 	xConvert = (p2.x - p1.x) / (x.max - x.min);
 	yConvert = (p2.y - p1.y) / (y.max - y.min);
 
-	origin = {};
+	origin   = {};
 	origin.x = p1.x + (-x.min) * xConvert;
 	origin.y = p1.y + (-y.min) * yConvert;
 }
@@ -55,6 +57,11 @@ void CoordinateSystem::DrawAxes(sf::RenderWindow& window)
 	DrawLine(window, p1.x, origin.y, p2.x, origin.y, AxesColor);
 	// Oy
 	DrawLine(window, origin.x, p1.y, origin.x, p2.y, AxesColor);
+}
+
+Point CoordinateSystem::GetOrigin()
+{
+	return origin;
 }
 
 //***///***///---\\\***\\\***\\\___///***___***\\\___///***///***///---\\\***\\\***\\ 

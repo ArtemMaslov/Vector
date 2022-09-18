@@ -11,13 +11,9 @@
 class Vector
 {
 public:
-	double len = NAN;
-
 	Vector(double x, double y);
 
 	Vector();
-
-	void Draw(sf::RenderWindow& window, CoordinateSystem& sc, double x0, double y0, sf::Color color = sf::Color::Black);
 
 	double Length();
 
@@ -44,9 +40,23 @@ public:
 
 	friend Vector& operator /= (Vector& vec, double number);
 
+	double len = NAN;
+
 private:
 	double x;
 	double y;
+};
+
+class VectorRender
+{
+public:
+	VectorRender(sf::RenderWindow& window, Vector& vector);
+
+	void DrawCoord(sf::RenderWindow& window, CoordinateSystem& sc, double x0, double y0, sf::Color color = sf::Color::Black);
+
+	void DrawPixel(sf::RenderWindow& window, double x0, double y0, double arrowWidth, double arrowHeight, sf::Color color = sf::Color::Black);
+
+	Vector Vector;
 };
 
 //***///***///---\\\***\\\***\\\___///***___***\\\___///***///***///---\\\***\\\***\\ 

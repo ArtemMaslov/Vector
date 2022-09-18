@@ -111,34 +111,111 @@ Vector& operator /= (Vector& vec, double number)
 //***///***///---\\\***\\\***\\\___///***___***\\\___///***///***///---\\\***\\\***\\ 
 //***///***///---\\\***\\\***\\\___///***___***\\\___///***///***///---\\\***\\\***\\ 
 
-void Vector::Draw(sf::RenderWindow& window, CoordinateSystem& sc, double x0, double y0, sf::Color color)
+void Vector::Draw(sf::RenderWindow& window, double x0, double y0, double arrowWidth, double arrowHeight, sf::Color color, bool coorMode)
 {
 	double c2x = x0 + x;
 	double c2y = y0 + y;
 	Point p1 = sc.CalcPoint(Point{x0, y0});
 	Point p2 = sc.CalcPoint(Point{c2x, c2y});
 
-	double len = Length();
 
-	double arrowHeight = len * 0.02;
-	double arrowWidth  = len * 0.08;
 
-	double wa = arrowWidth  * x;
-	double wb = arrowWidth  * y;
-	double ha = arrowHeight * x;
-	double hb = arrowHeight * y;
-
-	double arrow1X = (- wa - hb) / len;
-	double arrow1Y = (- wb + ha) / len;
-	Point  arrowP1 = sc.CalcPoint(Point{c2x + arrow1X, c2y + arrow1Y});
-	DrawLine(window, p2.x, p2.y, arrowP1.x, arrowP1.y, color);
-
-	double arrow2X = (- wa + hb) / len;
-	double arrow2Y = (- wb - ha) / len;
-	Point  arrowP2 = sc.CalcPoint(Point{c2x + arrow2X, c2y + arrow2Y});
-	DrawLine(window, p2.x, p2.y, arrowP2.x, arrowP2.y, color);
-
+	// –исуем линию вектора.
 	DrawLine(window, p1.x, p1.y, p2.x, p2.y, color);
+
+	// –исуем стрелочку.
+	// ¬се расчЄты выполн€ютс€ в пиксел€х.
+	double arrowHeight = sc.arrowHeight;
+	double arrowWidth  = sc.arrowWidth;
+
+	double pixVecWidth  = p2.x - p1.x;
+	double pixVecHeight = p2.y - p1.y;
+
+	// ƒлина вектора в пиксел€х.
+	double pixLen = sqrt(pixVecWidth * pixVecWidth + pixVecHeight * pixVecHeight);
+
+	// ѕереходим в новый базис {e1, e2}. e1 коллинеарен вектору, e2 перпендикул€рен ему.
+	double wa = arrowWidth  * pixVecWidth;
+	double wb = arrowWidth  * pixVecHeight;
+	double ha = arrowHeight * pixVecWidth;
+	double hb = arrowHeight * pixVecHeight;
+
+	double arrow1X = (- wa - hb) / pixLen;
+	double arrow1Y = (- wb + ha) / pixLen;
+	DrawLine(window, p2.x, p2.y, p2.x + arrow1X, p2.y + arrow1Y, color);
+
+	double arrow2X = (- wa + hb) / pixLen;
+	double arrow2Y = (- wb - ha) / pixLen;
+	DrawLine(window, p2.x, p2.y, p2.x + arrow2X, p2.y + arrow2Y, color);
+}
+
+void Vector::DrawCoord(sf::RenderWindow& window, CoordinateSystem& sc, double x0, double y0, sf::Color color)
+{
+	double c2x = x0 + x;
+	double c2y = y0 + y;
+	Point p1 = sc.CalcPoint(Point{x0, y0});
+	Point p2 = sc.CalcPoint(Point{c2x, c2y});
+
+	// –исуем линию вектора.
+	DrawLine(window, p1.x, p1.y, p2.x, p2.y, color);
+
+	// –исуем стрелочку.
+	// ¬се расчЄты выполн€ютс€ в пиксел€х.
+	double arrowHeight = sc.arrowHeight;
+	double arrowWidth  = sc.arrowWidth;
+
+	double pixVecWidth  = p2.x - p1.x;
+	double pixVecHeight = p2.y - p1.y;
+
+	// ƒлина вектора в пиксел€х.
+	double pixLen = sqrt(pixVecWidth * pixVecWidth + pixVecHeight * pixVecHeight);
+
+	// ѕереходим в новый базис {e1, e2}. e1 коллинеарен вектору, e2 перпендикул€рен ему.
+	double wa = arrowWidth  * pixVecWidth;
+	double wb = arrowWidth  * pixVecHeight;
+	double ha = arrowHeight * pixVecWidth;
+	double hb = arrowHeight * pixVecHeight;
+
+	double arrow1X = (- wa - hb) / pixLen;
+	double arrow1Y = (- wb + ha) / pixLen;
+	DrawLine(window, p2.x, p2.y, p2.x + arrow1X, p2.y + arrow1Y, color);
+
+	double arrow2X = (- wa + hb) / pixLen;
+	double arrow2Y = (- wb - ha) / pixLen;
+	DrawLine(window, p2.x, p2.y, p2.x + arrow2X, p2.y + arrow2Y, color);
+}
+
+void Vector::DrawPixel(sf::RenderWindow& window, double x0, double y0, double arrowWidth, double arrowHeight, sf::Color color)
+{
+	double c2x = x0 + x;
+	double c2y = y0 + y;
+	Point p1   = {x0, y0};
+	Point p2   = {c2x, c2y};
+
+	// –исуем линию вектора.
+	DrawLine(window, p1.x, p1.y, p2.x, p2.y, color);
+
+	// –исуем стрелочку.
+	// ¬се расчЄты выполн€ютс€ в пиксел€х.
+	double pixVecWidth  = p2.x - p1.x;
+	double pixVecHeight = p2.y - p1.y;
+
+	// ƒлина вектора в пиксел€х.
+	double pixLen = sqrt(pixVecWidth * pixVecWidth + pixVecHeight * pixVecHeight);
+
+	// ѕереходим в новый базис {e1, e2}. e1 коллинеарен вектору, e2 перпендикул€рен ему.
+	double wa = arrowWidth  * pixVecWidth;
+	double wb = arrowWidth  * pixVecHeight;
+	double ha = arrowHeight * pixVecWidth;
+	double hb = arrowHeight * pixVecHeight;
+
+	double arrow1X = (- wa - hb) / pixLen;
+	double arrow1Y = (- wb + ha) / pixLen;
+	DrawLine(window, p2.x, p2.y, p2.x + arrow1X, p2.y + arrow1Y, color);
+
+	double arrow2X = (- wa + hb) / pixLen;
+	double arrow2Y = (- wb - ha) / pixLen;
+	DrawLine(window, p2.x, p2.y, p2.x + arrow2X, p2.y + arrow2Y, color);
 }
 
 //***///***///---\\\***\\\***\\\___///***___***\\\___///***///***///---\\\***\\\***\\ 

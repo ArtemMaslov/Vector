@@ -29,6 +29,11 @@ public:
 
 	void DrawAxes(sf::RenderWindow& window);
 
+	Point GetOrigin();
+
+	double arrowWidth;
+	double arrowHeight;
+
 private:
 	Segment x;
 	Segment y;
